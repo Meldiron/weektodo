@@ -221,7 +221,7 @@ export default {
     }
 
     if (Notification.permission !== "denied") {
-      Notification.requestPermission();
+      // Notification.requestPermission();
     }
     this.$store.commit("loadCustomTodoListsIds", customToDoListIdsRepository.load());
     this.$store.commit("loadConfig", configRepository.load());

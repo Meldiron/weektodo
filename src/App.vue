@@ -165,7 +165,7 @@ import donateModal from "./views/donateModal";
 import welcomeModal from "./views/welcomeModal";
 import toDoModal from "./views/toDoModal/toDoModal";
 import tipsModal from "./views/tipsModal";
-import { Modal, Toast } from "bootstrap";
+import { Toast } from "bootstrap";
 import migrations from "./migrations/migrations";
 import version_json from "../public/version.json";
 import isElectron from "is-electron";
@@ -247,7 +247,7 @@ export default {
     window.addEventListener("resize", this.weekResetScroll);
     document.onreadystatechange = () => {
       if (document.readyState == "complete") {
-        setTimeout(this.hideSplash, 4500);
+        setTimeout(this.hideSplash, 1500); // Meldiron
       }
     };
 
@@ -343,10 +343,12 @@ export default {
       }
     },
     showWelcomeModal: function () {
+      /*/
       let modal = new Modal(document.getElementById("welcomeModal"), {
         backdrop: "static",
       });
       modal.show();
+      */
       this.$store.commit("updateConfig", { val: false, key: "firstTimeOpen" });
       configRepository.update(this.$store.getters.config);
     },

@@ -6,34 +6,13 @@
       class="splash-screen d-flex justify-content-center align-items-center"
       ref="splashScreen"
     >
-      <div class="d-flex flex-column align-items-center">
-        <div class="d-flex justify-content-center align-items-center" style="margin-bottom: 2.2rem">
-          <img
-            v-if="darkTheme"
-            class="logo"
-            src="../../public/img/weektodo-isologo-white.svg"
-            alt="WeekToDo Logo"
-            style="display: inline"
-          />
-          <img
-            v-else
-            class="logo"
-            src="../../public/img/weektodo-isologo-color.svg"
-            alt="WeekToDo Logo"
-            style="display: inline"
-          />
-        </div>
-        <div v-show="sponsor" class="d-flex justify-content-center" style="height: 50px">
-          <a v-if="sponsor" :href="sponsor.url" class="d-flex sponsor-container align-items-center" target="_blank">
-            <img :src="sponsor.img" class="sponsor-img" alt="WeekToDo Sponsor" />
+      <div v-if="sponsor !== ''" class="d-flex flex-column align-items-center">
+        <div class="d-flex justify-content-center" style="height: 50px">
+          <div class="d-flex sponsor-container align-items-center">
             <div class="my-2 mx-2">
-              <div class="fw-bolder d-inline" style="text-decoration: unset !important">{{ sponsor.name }}</div>
-              <div class="opacity-50 mx-2 d-inline">{{ sponsor.message }}</div>
+              <div class="mx-1 d-inline d-inline" style="text-decoration: unset !important">{{sponsor}}</div>
             </div>
-          </a>
-        </div>
-        <div style="height: 25px; width: 200px" class="d-flex justify-content-center">
-          <div v-show="sponsor" class="opacity-25" style="font-size: 0.7rem">{{ $t("ui.sponsoredBy") }}</div>
+          </div>
         </div>
       </div>
     </div>
@@ -46,14 +25,18 @@ export default {
   data() {
     return {
       show: true,
-      sponsor: null,
+      sponsor: "",
       darkTheme: this.$store.getters.config.darkTheme,
     };
   },
   mounted() {
     const axios = require("axios").default;
     axios
-      .get("https://weektodo.me/api/sponsors")
+      .get("https://cloud.appwrite.io/v1/databases/main/collections/main/documents/main", {
+        headers: {
+          'x-appwrite-project': '6601ae689f83edbc5d2b'
+        }
+      })
       .then((response) => this.renderSponsor(response))
       .catch((error) => console.log(error.message));
   },
@@ -62,38 +45,7 @@ export default {
       this.show = false;
     },
     renderSponsor: function (response) {
-      var sponsors = [];
-
-      sponsors.push({
-        name: "WeekToDo",
-        message: this.$t("donate.splashMessage"),
-        url: "https://weektodo.me/support-us",
-        img: "/icons/ko-fi.png",
-      });
-
-      response.data.bronze.forEach(function (obj) {
-        sponsors.push(obj);
-      });
-
-      response.data.silver.forEach(function (obj) {
-        for (let i = 0; i < 3; i++) {
-          sponsors.push(obj);
-        }
-      });
-
-      response.data.golden.forEach(function (obj) {
-        for (let i = 0; i < 7; i++) {
-          sponsors.push(obj);
-        }
-      });
-
-      response.data.diamond.forEach(function (obj) {
-        for (let i = 0; i < 15; i++) {
-          sponsors.push(obj);
-        }
-      });
-
-      this.sponsor = sponsors[Math.floor(Math.random() * sponsors.length)];
+      this.sponsor = response.data.message ?? "";
     },
   },
 };

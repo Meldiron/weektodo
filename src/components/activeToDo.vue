@@ -6,11 +6,11 @@
       <span class="noselect item-text" :class="{ 'checked-todo': activeTodo.toDo.checked }" style="flex-grow: 1"
         @click="checkTodoClickhandler" @click.middle="showToDoDetails">
         <span v-if="activeTodo.toDo.color != 'none'" class="cicle-icon" :style="'color: ' + activeTodo.toDo.color" :class="{
-          'bi-check-circle-fill': activeTodo.toDo.checked,
-          'bi-circle-fill': !activeTodo.toDo.checked,
+          'bi-check-square-fill': activeTodo.toDo.checked,
+          'bi-square-fill': !activeTodo.toDo.checked,
         }"></span>
         <span v-else class="cicle-icon"
-          :class="{ 'bi-check-circle': activeTodo.toDo.checked, 'bi-circle': !activeTodo.toDo.checked, }"></span>
+          :class="{ 'bi-check-square': activeTodo.toDo.checked, 'bi-square': !activeTodo.toDo.checked, }"></span>
         <span v-html="todoText"></span>
         <span class="time-details"> {{ timeFormat(activeTodo.toDo.time) }}
           <div class="alarm-indicator"
@@ -82,6 +82,11 @@ export default {
     },
     checkTodoClickhandler: function (e) {
       if (e.target.href) return;
+      
+      if(!this.activeTodo.toDo.checked) {
+        // eslint-disable-next-line
+        celebrate(e);
+      }
 
       this.$store.commit("checkTodo", { toDoListId: this.activeTodo.toDoListId, index: this.activeTodo.index, });
       var id = this.activeTodo.toDoListId;
@@ -361,8 +366,8 @@ export default {
   margin-right: 5px;
 }
 
-.bi-check-circle-fill,
-.bi-check-circle {
+.bi-check-square-fill,
+.bi-check-square {
   opacity: 0.7;
 }
 </style>

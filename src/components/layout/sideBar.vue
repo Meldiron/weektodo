@@ -1,25 +1,5 @@
 <template>
   <div class="side-bar">
-    <img
-      class="logo"
-      src="/img/logo-color.svg"
-      width="42"
-      height="42"
-      alt="WeekTodo Logo"
-      data-bs-toggle="modal"
-      data-bs-target="#aboutModal"
-      :title="$t('about.about')"
-    />
-    <img
-      class="logo logo-white"
-      src="/img/logo-white.svg"
-      width="42"
-      height="42"
-      alt="WeekTodo Logo"
-      data-bs-toggle="modal"
-      data-bs-target="#aboutModal"
-      :title="$t('about.about')"
-    />
     <i v-if="showCalendar" class="bi-house" @click="setTodayDate" :title="$t('ui.today')"></i>
     <datepicker
       v-if="datepickerEnabled"
@@ -59,21 +39,10 @@
         <li>
           <hr class="dropdown-divider" />
         </li>
-        <li>
-          <a href="https://weektodo.me/support-us" target="_blank" class="dropdown-item" type="button">
-            <i class="bi-gift"></i> <span>{{ $t("donate.supportUs") }}</span>
-          </a>
-        </li>
-        <li>
-          <button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#aboutModal">
-            <i class="bi-info-circle"></i> <span>{{ $t("about.about") }}</span>
-          </button>
-        </li>
       </ul>
     </div>
 
     <!-- <i class="bi-person-circle" :title="$t('donate.supportUs')" @click="openDonateModal"></i> -->
-    <i class="bi-info-square" data-bs-toggle="modal" data-bs-target="#tipsModal" :title="$t('tips.tips')"></i>
     <i
       class="bi-gear"
       data-bs-toggle="modal"

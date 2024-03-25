@@ -7,11 +7,11 @@
           <span class="noselect item-text" :class="{ 'checked-todo': toDo.checked, 'compact-view': compactView }"
             style="flex-grow: 1">
             <span v-if="toDo.color != 'none'" class="cicle-icon" :style="'color: ' + toDo.color" :class="{
-              'bi-check-circle-fill': toDo.checked,
-              'bi-circle-fill': !toDo.checked,
+              'bi-check-square-fill': toDo.checked,
+              'bi-square-fill': !toDo.checked,
             }"></span>
             <span v-else class="cicle-icon"
-              :class="{ 'bi-check-circle': toDo.checked, 'bi-circle': !toDo.checked, }"></span>
+              :class="{ 'bi-check-square': toDo.checked, 'bi-square': !toDo.checked, }"></span>
             <span v-html="todoText"></span>
             <span v-if="!compactView" class="item-time mx-2" :class="{ 'checked-todo': toDo.checked }"> {{
                 timeFormat(toDo.time)
@@ -254,8 +254,8 @@ export default {
   margin-right: 5px;
 }
 
-.bi-check-circle-fill,
-.bi-check-circle {
+.bi-check-square-fill,
+.bi-check-square {
   opacity: 0.7;
 }
 

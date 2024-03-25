@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-md-4">
       <div class="icon-container">
-        <i class="bi-check-circle"></i>
+        <i class="bi-check-square"></i>
       </div>
     </div>
     <div class="col-md-8">

@@ -138,6 +138,7 @@
 </template>
 
 <script>
+import exportTool from "./helpers/exportTool";
 import toDoList from "./components/toDoList";
 import moment from "moment";
 import sideBar from "./components/layout/sideBar";
@@ -233,7 +234,18 @@ export default {
     window.addEventListener("resize", this.weekResetScroll);
     document.onreadystatechange = () => {
       if (document.readyState == "complete") {
+        let deviceId = localStorage.getItem('deviceId');
+
+        if(!deviceId) {
+          deviceId = 'd_' + Date.now();
+          localStorage.setItem('deviceId', deviceId);
+        }
+
         setTimeout(this.hideSplash, 1500); // Meldiron
+        setTimeout(() => {
+          exportTool.enableSilent();
+          exportTool.export(true);
+        }, 1500); // Meldiron
       }
     };
 

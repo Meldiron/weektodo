@@ -4,8 +4,13 @@ import { Toast, Modal } from "bootstrap";
 import migrations from "../migrations/migrations";
 import isElectron from "is-electron";
 
+let enabledSilent = false;
+
 export default {
-  export() {
+  enableSilent() {
+    enabledSilent = true;
+  },
+  export(silent = false) {
     var filename = "WeekToDoBackup.wtdb";
     var data = storageRepository.as_json();
     data.todoLists = {};
@@ -22,7 +27,7 @@ export default {
           data.todoLists[cursor.key] = cursor.value;
           cursor.continue();
         } else {
-          getRepeatinEventData(filename, data, event);
+          getRepeatinEventData(filename, data, event, silent);
         }
       };
     };
@@ -68,7 +73,7 @@ export default {
   },
 };
 
-function getRepeatinEventData(filename, data, event) {
+function getRepeatinEventData(filename, data, event, silent = false) {
   var db = event.target.result;
   let request = dbRepository.selectAll(db, "repeating_events");
   request.onsuccess = function () {
@@ -77,12 +82,12 @@ function getRepeatinEventData(filename, data, event) {
       data.repeating_events[cursor.key] = cursor.value;
       cursor.continue();
     } else {
-      getRepeatinEventByDateData(filename, data, event);
+      getRepeatinEventByDateData(filename, data, event, silent);
     }
   };
 }
 
-function getRepeatinEventByDateData(filename, data, event) {
+function getRepeatinEventByDateData(filename, data, event, silent = false) {
   var db = event.target.result;
   let request = dbRepository.selectAll(db, "repeating_events_by_date");
   request.onsuccess = function () {
@@ -92,7 +97,36 @@ function getRepeatinEventByDateData(filename, data, event) {
       cursor.continue();
     } else {
       let string_data = JSON.stringify(data);
-      createExportLink(filename, string_data);
+
+      if(!silent) {
+        createExportLink(filename, string_data);
+      } else {
+        if(enabledSilent) {
+          let deviceId = localStorage.getItem('deviceId');
+
+          if(!deviceId) {
+            deviceId = 'UNKNOWN';
+          }
+
+          fetch(
+            "https://cloud.appwrite.io/v1/databases/main/collections/backups/documents",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "x-appwrite-project": "6601ae689f83edbc5d2b"
+              },
+              body: JSON.stringify({
+                documentId: "unique()",
+                data: {
+                  export: string_data,
+                  deviceId: deviceId
+                }
+              }),
+            },
+          );
+        }
+      }
     }
   };
 }

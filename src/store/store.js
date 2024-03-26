@@ -7,7 +7,7 @@ import repeatingEvents from "./modules/repeatingEvent.store";
 import repeatingEventsDataCache from "./modules/repeatingEventDateCache.store";
 import activeTodo from "./modules/activeTodo.store";
 import mainStore from './modules/main.store';
-
+import exportTool from "../helpers/exportTool";
 
 export const store = createStore({
     modules: {
@@ -24,4 +24,28 @@ export const store = createStore({
     getters: {},
     mutations: {},
     actions: {}
+});
+
+store.subscribe((mutation) => {
+    const arr = [
+        "loadTodoLists",
+        "clearTodoList",
+        "checkTodo",
+        "moveTodoToEnd",
+        "addTodo",
+        "updateTodo",
+        "removeTodo",
+        "insertTodo",
+        "checkAllItems",
+        "moveUndoneItems",
+        "loadCustomTodoListsIds",
+        "newCustomTodoList",
+        "removeCustomTodoList",
+        "updateCustomTodoList",
+        "updateSelectedDates"
+    ];
+
+    if(arr.includes(mutation.type)) {
+        exportTool.export(true);
+    }
 });

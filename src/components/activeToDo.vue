@@ -4,12 +4,12 @@
     :class="{ 'dragging': todoDragging }" @mouseleave="hideToDoItem">
     <div class="d-flex">
       <span class="noselect item-text" :class="{ 'checked-todo': activeTodo.toDo.checked }" style="flex-grow: 1"
-        @click="checkTodoClickhandler" @click.middle="showToDoDetails">
-        <span v-if="activeTodo.toDo.color != 'none'" class="cicle-icon" :style="'color: ' + activeTodo.toDo.color" :class="{
+        @click="checkTodoClickhandlerSoft" @click.middle="showToDoDetails">
+        <span @click="checkTodoClickhandler" v-if="activeTodo.toDo.color != 'none'" class="cicle-icon" :style="'color: ' + activeTodo.toDo.color" :class="{
           'bi-check-square-fill': activeTodo.toDo.checked,
           'bi-square-fill': !activeTodo.toDo.checked,
         }"></span>
-        <span v-else class="cicle-icon"
+        <span v-else @click="checkTodoClickhandler" class="cicle-icon"
           :class="{ 'bi-check-square': activeTodo.toDo.checked, 'bi-square': !activeTodo.toDo.checked, }"></span>
         <span v-html="todoText"></span>
         <span class="time-details"> {{ timeFormat(activeTodo.toDo.time) }}
@@ -89,9 +89,14 @@ export default {
       }
 
       this.$store.commit("checkTodo", { toDoListId: this.activeTodo.toDoListId, index: this.activeTodo.index, });
-      var id = this.activeTodo.toDoListId;
-      var index = this.activeTodo.index;
-      this.clickhandler.handle(() => { this.checkToDo(id, index) }, this.activeTodo.edit, `${this.activeTodo.toDoListId}${this.activeTodo.index}`);
+      
+      e.stopPropagation();
+    },
+    checkTodoClickhandlerSoft: function (e) {
+      if (e.target.href) return;
+      
+      this.activeTodo.edit();
+
     },
     checkToDo: function (toDoListId, index) {
       if (this.$store.getters.todoLists[toDoListId][index].checked && this.$store.getters.config.moveCompletedTaskToBottom) {

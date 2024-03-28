@@ -1,6 +1,8 @@
 <template>
   <div class="side-bar">
     <i v-if="showCalendar" class="bi-house" @click="setTodayDate" :title="$t('ui.today')"></i>
+        
+    <i class="bi-cloud-arrow-up-fill" :style="{color: isGreen ? '#3b82f6' : ''}" @click="saveToCloud" :title="$t('ui.today')"></i>
     <datepicker
       v-if="datepickerEnabled"
       id="side-bar-date-picker-input"
@@ -26,6 +28,12 @@
       data-bs-target="#ReorderCustomListsModal"
       data-bs-toggle="modal"
       :title="$t('ui.reorderCustomLists')"
+    ></i>
+    <i
+      class="bi bi-person-bounding-box"
+      data-bs-target="#DeviceIdModal"
+      data-bs-toggle="modal"
+      :title="'Set Device ID'"
     ></i>
     <span style="flex-grow: 1"></span>
     <div class="dropend d-flex justify-content-center sidebar-extra-menu">
@@ -59,6 +67,7 @@ import customToDoListIdsRepository from "../../repositories/customToDoListIdsRep
 import toDoListRepository from "../../repositories/toDoListRepository";
 import Datepicker from "vue3-datepicker";
 import languageHelper from "../../helpers/languageHelper.js";
+import exportTool from "../../helpers/exportTool.js";
 
 export default {
   name: "sideBar",
@@ -68,6 +77,7 @@ export default {
   },
   data() {
     return {
+      isGreen: true,
       pickedDate: new Date(),
       datepickerEnabled: false,
     };
@@ -96,6 +106,14 @@ export default {
           evt.keyCode == 27 && document.getElementById("side-bar-date-picker-input").blur();
         };
       });
+    },
+    saveToCloud: function() {
+      exportTool.export(true);
+      this.isGreen = false;
+      
+      setTimeout(() => {
+        this.isGreen = true;
+      }, 1500);
     },
     setTodayDate: function () {
       this.$emit("changeDate", moment().format("YYYYMMDD"));

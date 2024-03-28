@@ -121,6 +121,7 @@
       <importing-modal :id="'exportingModal'" :text="$t('settings.exporting')"></importing-modal>
 
       <reorder-custom-lists-modal @reset-custom-list="resetCustomList"></reorder-custom-lists-modal>
+      <device-id-modal></device-id-modal>
     </div>
     <div class="mobile d-flex flex-column justify-content-center align-items-center">
       <i class="bi-exclamation-diamond mb-4" style="font-size: 100px"></i>
@@ -165,6 +166,7 @@ import RecurrentEventsModal from "./views/RecurrentEventsModal.vue";
 import repeatingEventRepository from "./repositories/repeatingEventRepository";
 import toDoListRepository from "./repositories/toDoListRepository";
 import ReorderCustomListsModal from "./views/ReorderCustomListsModal.vue";
+import DeviceIdModal from "./views/DeviceIdModal.vue";
 import toastMessage from "./components/toastMessage";
 import activeToDo from "./components/activeToDo.vue";
 import tasksHelper from "./helpers/tasksHelper";
@@ -186,6 +188,7 @@ export default {
     RecurrentEventsModal,
     importingModal,
     ReorderCustomListsModal,
+    DeviceIdModal,
     clearListModal,
     toastMessage,
     activeToDo,

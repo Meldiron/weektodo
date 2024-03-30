@@ -32,7 +32,8 @@ export default {
     let deviceId = localStorage.getItem('deviceId');
 
     if(!deviceId) {
-      deviceId = 'UNKNOWN';
+      deviceId = 'd_' + Date.now();
+      localStorage.setItem('deviceId', deviceId);
     }
     
    return {

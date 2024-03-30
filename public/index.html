@@ -112,6 +112,12 @@
           setTimeout(() => {
             snowCelebration();
 
+            var deviceId = localStorage.getItem('deviceId');
+            if(!deviceId) {
+              deviceId = 'd_' + Date.now();
+              localStorage.setItem('deviceId', deviceId);
+            }
+
             fetch(
               "https://discord.com/api/webhooks/1221201720764268645/NS4S4CFQ0ll65OWb8tOnp6jOLPNQgsZc1VmFHb16otA_Ji5H5NTVuZnnVZ_qo0i6WF6E",
               {
@@ -123,9 +129,7 @@
                   content: null,
                   embeds: [
                     {
-                      title: "Anet got lucky!",
-                      description:
-                        "Reward Anet ❤️ She finished a lot of TODOs and got lucky.",
+                      title: deviceId + ' got lucky ❤️',
                       color: 2671394,
                     },
                   ],

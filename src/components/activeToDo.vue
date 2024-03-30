@@ -89,6 +89,9 @@ export default {
       }
 
       this.$store.commit("checkTodo", { toDoListId: this.activeTodo.toDoListId, index: this.activeTodo.index, });
+      var id = this.activeTodo.toDoListId;
+      var index = this.activeTodo.index;
+      this.clickhandler.handle(() => { this.checkToDo(id, index) }, () => {}, `${this.activeTodo.toDoListId}${this.activeTodo.index}`);
       
       e.stopPropagation();
     },
